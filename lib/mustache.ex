@@ -1,0 +1,2 @@
+defmodule Mustache do
+end
