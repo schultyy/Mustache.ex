@@ -12,4 +12,8 @@ defmodule MustacheTest do
   test "Basic interpolation should be HTML escaped." do
     assert Mustache.render("These characters should be HTML escaped: {{forbidden}}\n", %{forbidden: "& \" < >"}) == "These characters should be HTML escaped: &amp; &quot; &lt; &gt;\n"
   end
+
+  test "Triple mustaches should interpolate without HTML escaping." do
+    assert Mustache.render("These characters should not be HTML escaped: {{{forbidden}}}\n", %{forbidden: "& \" < >"}) == "These characters should not be HTML escaped: & \" < >\n"
+  end
 end
