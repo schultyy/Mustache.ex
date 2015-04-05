@@ -47,4 +47,8 @@ defmodule MustacheTest do
   test "Ampersand Decimal Interpolation" do
     assert Mustache.render("\"{{&power}} jiggawatts!\"", %{power: 1.21}) == "\"1.21 jiggawatts!\""
   end
+
+  test "Basic Context Miss Interpolation" do
+    assert Mustache.render("I ({{cannot}}) be seen!", %{}) == "I () be seen!"
+  end
 end
