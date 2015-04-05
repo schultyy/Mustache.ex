@@ -38,4 +38,8 @@ defmodule MustacheTest do
   test "Basic Decimal Interpolation" do
     assert Mustache.render("\"{{power}} jiggawatts!\"", %{power: 1.21}) == "\"1.21 jiggawatts!\""
   end
+
+  test "Triple Mustache Decimal Interpolation" do
+    assert Mustache.render("\"{{{power}}} jiggawatts!\"", %{power: 1.21}) == "\"1.21 jiggawatts!\""
+  end
 end
