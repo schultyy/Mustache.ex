@@ -51,4 +51,8 @@ defmodule MustacheTest do
   test "Basic Context Miss Interpolation" do
     assert Mustache.render("I ({{cannot}}) be seen!", %{}) == "I () be seen!"
   end
+
+  test "Triple Mustache Context Miss Interpolation" do
+    assert Mustache.render("I ({{{cannot}}}) be seen!", %{}) == "I () be seen!"
+  end
 end
