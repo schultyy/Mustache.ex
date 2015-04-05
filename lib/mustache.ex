@@ -17,7 +17,7 @@ defmodule Mustache do
       [] -> template
       _  ->
         variable = List.first(scans) |> clean(["{{", "}}"]) |> String.to_atom
-        value = data[variable] |> escape
+        value = data[variable] |> to_string |> escape
         if value == nil do
           template
         else
