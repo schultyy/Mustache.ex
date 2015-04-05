@@ -29,4 +29,9 @@ defmodule MustacheTest do
   test "Triple Mustache Integer Interpolation" do
     assert Mustache.render("\"{{{mph}}} miles an hour!\"", %{mph: 85}) == "\"85 miles an hour!\""
   end
+
+  @tag :pending
+  test "Ampersand Integer Interpolation" do
+    assert Mustache.render("\"{{&mph}} miles an hour!\"", %{mph: 85}) == "\"85 miles an hour!\""
+  end
 end
