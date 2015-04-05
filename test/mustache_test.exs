@@ -17,6 +17,11 @@ defmodule MustacheTest do
     assert Mustache.render("These characters should not be HTML escaped: {{{forbidden}}}\n", %{forbidden: "& \" < >"}) == "These characters should not be HTML escaped: & \" < >\n"
   end
 
+  @tag :pending
+  test "Ampersand" do
+    assert Mustache.render("These characters should not be HTML escaped: {{&forbidden}}\n", %{forbidden: "& \" < >"}) == "These characters should not be HTML escaped: & \" < >\n"
+  end
+
   test "Integers should interpolate seamlessly." do
     assert Mustache.render("\"{{mph}} miles an hour!\"", %{mph: 85}) == "\"85 miles an hour!\""
   end
