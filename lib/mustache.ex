@@ -32,7 +32,7 @@ defmodule Mustache do
       [] -> template
       _  ->
         variable = List.first(scans) |> clean(["{{{", "}}}"]) |> String.to_atom
-        value = data[variable]
+        value = data[variable] |> to_string
         if value == nil do
           template
         else

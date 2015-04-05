@@ -20,4 +20,8 @@ defmodule MustacheTest do
   test "Integers should interpolate seamlessly." do
     assert Mustache.render("\"{{mph}} miles an hour!\"", %{mph: 85}) == "\"85 miles an hour!\""
   end
+
+  test "Triple Mustache Integer Interpolation" do
+    assert Mustache.render("\"{{{mph}}} miles an hour!\"", %{mph: 85}) == "\"85 miles an hour!\""
+  end
 end
