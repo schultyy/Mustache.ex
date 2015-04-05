@@ -42,4 +42,9 @@ defmodule MustacheTest do
   test "Triple Mustache Decimal Interpolation" do
     assert Mustache.render("\"{{{power}}} jiggawatts!\"", %{power: 1.21}) == "\"1.21 jiggawatts!\""
   end
+
+  @tag :pending
+  test "Ampersand Decimal Interpolation" do
+    assert Mustache.render("\"{{&power}} jiggawatts!\"", %{power: 1.21}) == "\"1.21 jiggawatts!\""
+  end
 end
