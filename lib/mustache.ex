@@ -42,11 +42,15 @@ defmodule Mustache do
   end
 
   defp double_regex do
-    Regex.compile!("\{\{\\w+\}\}")
+    regex("{{", "}}")
   end
 
   defp triple_regex do
-    Regex.compile!("\{\{\{\\w+\}\}\}")
+    regex("{{{", "}}}")
+  end
+
+  defp regex(otag, ctag) do
+    Regex.compile!("#{otag}\\w+#{ctag}")
   end
 
   defp escape(non_escaped) do
