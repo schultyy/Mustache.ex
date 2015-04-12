@@ -1,5 +1,6 @@
 Mustache
 ========
+[![Build Status](https://travis-ci.org/schultyy/Mustache.ex.svg?branch=master)](https://travis-ci.org/schultyy/Mustache.ex)
 
 Minimal templating with {{mustaches}} in Elixir - [http://mustache.github.com/](http://mustache.github.com/)
 
