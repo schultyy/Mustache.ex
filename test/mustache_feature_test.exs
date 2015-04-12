@@ -106,4 +106,8 @@ defmodule MustacheFeatureTest do
    test "Triple Mustache With Padding" do
      assert Mustache.render("|{{{ string }}}|", %{ string: "---" }) == "|---|"
    end
+
+   test "Ampersand With Padding" do
+     assert Mustache.render("|{{& string }}|", %{ string: "---" }) == "|---|"
+   end
 end

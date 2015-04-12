@@ -75,7 +75,7 @@ defmodule Mustache do
   end
 
   defp double_regex do
-    regex("{{\\s*", "\\s*}}", "&?\\w+")
+    regex("{{\\s*", "\\s*}}", "&?\\s*\\w+")
   end
 
   defp triple_regex do
