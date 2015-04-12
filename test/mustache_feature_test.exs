@@ -53,6 +53,10 @@ defmodule MustacheFeatureTest do
     assert Mustache.render("I ({{{cannot}}}) be seen!", %{}) == "I () be seen!"
   end
 
+  test "Ampersand Context Miss Interpolation" do
+    assert Mustache.render("I ({{&cannot}}) be seen!", %{}) == "I () be seen!"
+  end
+
   test "Dotted Names" do
     assert Mustache.render("\"{{person.name}}\" == \"Joe\"",
               %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
