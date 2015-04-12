@@ -22,6 +22,11 @@ defmodule MustacheTest do
     assert Mustache.render("These characters should not be HTML escaped: {{{forbidden}}}\n", %{forbidden: "& \" < >"}) == "These characters should not be HTML escaped: & \" < >\n"
   end
 
+  test "Multiple triple mustaches" do
+    forbidden = %{set1: "& \"", set2: "< >"}
+    assert Mustache.render("Not HTML escaped: {{{set1}}} These also not: {{{set2}}}\n", forbidden) == "Not HTML escaped: & \" These also not: < >\n"
+  end
+
   @tag :pending
   test "Ampersand" do
     assert Mustache.render("These characters should not be HTML escaped: {{&forbidden}}\n", %{forbidden: "& \" < >"}) == "These characters should not be HTML escaped: & \" < >\n"
