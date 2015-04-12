@@ -22,7 +22,7 @@ defmodule Mustache do
         if value == nil do
           template
         else
-          String.replace(template, "{{#{variable}}}", value)
+          double_mustaches(String.replace(template, "{{#{variable}}}", value), data)
         end
     end
   end

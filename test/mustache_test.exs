@@ -9,6 +9,11 @@ defmodule MustacheTest do
     assert Mustache.render("Hello, {{subject}}!\n", %{subject: "world"}) == "Hello, world!\n"
   end
 
+  test "Multiple variables" do
+    data = %{subject: "world", name: "John"}
+    assert Mustache.render("Hello {{subject}}, my name is {{name}}", data) == "Hello world, my name is John"
+  end
+
   test "HTML Escaping" do
     assert Mustache.render("These characters should be HTML escaped: {{forbidden}}\n", %{forbidden: "& \" < >"}) == "These characters should be HTML escaped: &amp; &quot; &lt; &gt;\n"
   end
