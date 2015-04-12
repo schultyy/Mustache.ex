@@ -1,14 +1,15 @@
 defmodule Mustache do
 
   def render(template, data \\%{}) do
-    cond do
-      Regex.match?(triple_regex, template) ->
-        triple_mustaches(template, data)
-      Regex.match?(double_regex, template) ->
-        double_mustaches(template, data)
-      true ->
+    Enum.reduce(strategies, template, fn(strategy, template) ->
+      predicate = elem(strategy, 0)
+      function = elem(strategy, 1)
+      if predicate.(template) do
+        function.(template, data)
+      else
         template
-    end
+      end
+    end)
   end
 
   defp double_mustaches(template, data) do
@@ -23,6 +24,17 @@ defmodule Mustache do
         else
           String.replace(template, "{{#{variable}}}", value)
         end
+    end
+  end
+
+  defp scan_for_dot(template, data) do
+    regex = regex("{{", "}}", "\\w+\\.\\w+")
+    scans = Regex.scan(regex, template) |> List.flatten
+    case scans do
+      [] -> template
+      _  ->
+        path = List.first(scans) |> clean(["{{", "}}"])
+        interpolate(template, data, path)
     end
   end
 
@@ -41,12 +53,29 @@ defmodule Mustache do
     end
   end
 
+  defp interpolate(template, data, path) do
+    value = resolve(data, String.split(path, "."))
+    String.replace(template, "{{#{path}}}", value)
+  end
+
+  defp resolve(data, path) do
+    key = String.to_atom(hd(path))
+    case tl(path) do
+      [] -> data[key]
+      _  -> resolve(data[key], tl(path))
+    end
+  end
+
   defp double_regex do
-    Regex.compile!("\{\{\\w+\}\}")
+    regex("{{", "}}")
   end
 
   defp triple_regex do
-    Regex.compile!("\{\{\{\\w+\}\}\}")
+    regex("{{{", "}}}")
+  end
+
+  defp regex(otag, ctag, body \\ "\\w+") do
+    Regex.compile!("#{otag}#{body}#{ctag}")
   end
 
   defp escape(non_escaped) do
@@ -60,5 +89,14 @@ defmodule Mustache do
     Enum.reduce(patterns, non_cleaned, fn(pattern, str) ->
       String.replace(str, pattern, "")
     end)
+  end
+
+  defp strategies do
+    [{ fn(template) -> Regex.match?(triple_regex, template) end,
+        fn(template, data) -> triple_mustaches(template, data) end},
+    { fn(template) -> Regex.match?(regex("{{", "}}", "\\w+\\.\\w+"), template) end,
+        fn(template, data) -> scan_for_dot(template, data) end },
+    { fn(template) -> Regex.match?(double_regex, template) end,
+        fn(template, data) -> double_mustaches(template, data) end}]
   end
 end

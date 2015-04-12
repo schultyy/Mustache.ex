@@ -55,4 +55,15 @@ defmodule MustacheTest do
   test "Triple Mustache Context Miss Interpolation" do
     assert Mustache.render("I ({{{cannot}}}) be seen!", %{}) == "I () be seen!"
   end
+
+  test "Dotted Names" do
+    assert Mustache.render("\"{{person.name}}\" == \"Joe\"",
+              %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+  end
+
+  @tag :pending
+  test "Dotted Names - Basic Interpolation" do
+    assert Mustache.render("\"{{person.name}}\" == \"{{#person}}{{name}}{{/person}}\"",
+              %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+  end
 end
