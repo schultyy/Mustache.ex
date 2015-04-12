@@ -9,6 +9,23 @@ Prerequisites
 
 - Elixir 1.0.x
 
+Installation
+============
+
+In your `mix.exs`, add Mustache as dependency:
+
+```elixir
+defp deps do
+  [{:mustache, "~> 0.0.2"}]
+end
+```
+
+Example
+=======
+
+```elixir
+Mustache.render("Hello, my name is {{name}}", %{name: "Alice"})
+```
 
 Tests
 =====
