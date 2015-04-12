@@ -57,6 +57,8 @@ defmodule MustacheFeatureTest do
     assert Mustache.render("I ({{&cannot}}) be seen!", %{}) == "I () be seen!"
   end
 
+  #Dotted Names
+
   test "Dotted Names" do
     assert Mustache.render("\"{{person.name}}\" == \"Joe\"",
               %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
@@ -66,5 +68,32 @@ defmodule MustacheFeatureTest do
   test "Dotted Names - Basic Interpolation" do
     assert Mustache.render("\"{{person.name}}\" == \"{{#person}}{{name}}{{/person}}\"",
               %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+  end
+
+  #Whitespace sensitivity
+
+  test "Interpolation - Surrounding Whitespace" do
+    assert Mustache.render("| {{string}} |", %{string: '---'}) == "| --- |"
+  end
+
+
+  test "Triple Mustache - Surrounding Whitespace" do
+    assert Mustache.render("| {{{string}}} |", %{ string: '---' }) == "| --- |"
+  end
+
+  test "Ampersand - Surrounding Whitespace" do
+    assert Mustache.render("| {{&string}} |", %{string: '---' }) == "| --- |"
+  end
+
+  test "Interpolation - Standalone" do
+    assert Mustache.render("  {{string}}\n", %{string: '---' }) == "  ---\n"
+  end
+
+  test "Triple Mustache - Standalone" do
+    assert Mustache.render("  {{{string}}}\n", %{ string: '---' }) == "  ---\n"
+  end
+
+  test "Ampersand - Standalone" do
+    assert Mustache.render("  {{&string}}\n", % { string: '---' }) == "  ---\n"
   end
 end
