@@ -20,9 +20,10 @@ defmodule Mustache do
         first_scan = List.first(scans)
         variable = first_scan |> clean(["{{", "}}"])
         if escape?(first_scan) do
-          value = data[String.to_atom(variable)] |> to_string |> escape
+          key = variable |> String.strip |> String.to_atom
+          value = data[key] |> to_string |> escape
         else
-          key = String.replace(variable, "&", "") |> String.to_atom
+          key = String.replace(variable, "&", "") |> String.strip |> String.to_atom
           value = data[key] |> to_string
         end
         if value == nil do
@@ -73,7 +74,7 @@ defmodule Mustache do
   end
 
   defp double_regex do
-    regex("{{", "}}", "&?\\w+")
+    regex("{{\\s*", "\\s*}}", "&?\\w+")
   end
 
   defp triple_regex do

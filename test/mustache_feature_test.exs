@@ -96,4 +96,10 @@ defmodule MustacheFeatureTest do
   test "Ampersand - Standalone" do
     assert Mustache.render("  {{&string}}\n", % { string: '---' }) == "  ---\n"
   end
+
+   # Whitespace Insensitivity
+
+   test "Interpolation With Padding" do
+     assert Mustache.render("|{{ string }}|", %{ string: "---" }) == "|---|"
+   end
 end
