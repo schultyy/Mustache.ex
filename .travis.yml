@@ -1,0 +1,7 @@
+language: elixir
+otp_release:
+  - 17.4
+script:
+  - mix local.hex --force
+  - mix deps.get
+  - mix test --exclude pending:true
