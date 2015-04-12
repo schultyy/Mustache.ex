@@ -5,6 +5,8 @@ defmodule Mustache.Mixfile do
     [app: :mustache,
      version: "0.0.1",
      elixir: "~> 1.0",
+     package: package,
+     description: "Mustache templates for Elixir",
      deps: deps]
   end
 
@@ -26,5 +28,12 @@ defmodule Mustache.Mixfile do
   # Type `mix help deps` for more examples and options
   defp deps do
     []
+  end
+
+  defp package do
+    [contributors: ["Jan Schulte"],
+      licenses: ["MIT License"],
+      links: %{"GitHub" => "https://github.com/schultyy/Mustache.ex"},
+      files: ~w(mix.exs README.md lib)]
   end
 end
