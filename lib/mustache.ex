@@ -17,8 +17,14 @@ defmodule Mustache do
     case scans do
       [] -> template
       _  ->
-        variable = List.first(scans) |> clean(["{{", "}}"]) |> String.to_atom
-        value = data[variable] |> to_string |> escape
+        first_scan = List.first(scans)
+        variable = first_scan |> clean(["{{", "}}"])
+        if escape?(first_scan) do
+          value = data[String.to_atom(variable)] |> to_string |> escape
+        else
+          key = String.replace(variable, "&", "") |> String.to_atom
+          value = data[key] |> to_string
+        end
         if value == nil do
           template
         else
@@ -67,7 +73,7 @@ defmodule Mustache do
   end
 
   defp double_regex do
-    regex("{{", "}}")
+    regex("{{", "}}", "&?\\w+")
   end
 
   defp triple_regex do
@@ -76,6 +82,10 @@ defmodule Mustache do
 
   defp regex(otag, ctag, body \\ "\\w+") do
     Regex.compile!("#{otag}#{body}#{ctag}")
+  end
+
+  defp escape?(template) do
+    !String.contains?(template, "&")
   end
 
   defp escape(non_escaped) do
