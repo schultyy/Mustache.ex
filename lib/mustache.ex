@@ -34,7 +34,7 @@ defmodule Mustache do
       [] -> template
       _  ->
         path = List.first(scans) |> clean(["{{", "}}"])
-        interpolate(template, data, path)
+        scan_for_dot(interpolate(template, data, path), data)
     end
   end
 
