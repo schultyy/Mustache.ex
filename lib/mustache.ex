@@ -50,8 +50,9 @@ defmodule Mustache do
     case scans do
       [] -> template
       _  ->
-        variable = List.first(scans) |> clean(["{{{", "}}}"]) |> String.to_atom
-        value = data[variable] |> to_string
+        variable = List.first(scans) |> clean(["{{{", "}}}"])
+        key = variable |> String.strip |> String.to_atom
+        value = data[key] |> to_string
         if value == nil do
           template
         else
@@ -78,7 +79,7 @@ defmodule Mustache do
   end
 
   defp triple_regex do
-    regex("{{{", "}}}")
+    regex("{{{\\s*", "\\s*}}}")
   end
 
   defp regex(otag, ctag, body \\ "\\w+") do
