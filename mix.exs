@@ -3,7 +3,7 @@ defmodule Mustache.Mixfile do
 
   def project do
     [app: :mustache,
-     version: "0.0.1",
+     version: "0.0.2",
      elixir: "~> 1.0",
      package: package,
      description: "Mustache templates for Elixir",
