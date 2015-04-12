@@ -29,7 +29,6 @@ defmodule MustacheFeatureTest do
     assert Mustache.render("\"{{{mph}}} miles an hour!\"", %{mph: 85}) == "\"85 miles an hour!\""
   end
 
-  @tag :pending
   test "Ampersand Integer Interpolation" do
     assert Mustache.render("\"{{&mph}} miles an hour!\"", %{mph: 85}) == "\"85 miles an hour!\""
   end
@@ -42,7 +41,6 @@ defmodule MustacheFeatureTest do
     assert Mustache.render("\"{{{power}}} jiggawatts!\"", %{power: 1.21}) == "\"1.21 jiggawatts!\""
   end
 
-  @tag :pending
   test "Ampersand Decimal Interpolation" do
     assert Mustache.render("\"{{&power}} jiggawatts!\"", %{power: 1.21}) == "\"1.21 jiggawatts!\""
   end
