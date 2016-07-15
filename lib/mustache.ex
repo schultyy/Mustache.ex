@@ -20,11 +20,11 @@ defmodule Mustache do
         first_scan = List.first(scans)
         variable = first_scan |> clean(["{{", "}}"])
         if escape?(first_scan) do
-          key = variable |> String.strip |> String.to_atom
-          value = data[key] |> to_string |> escape
+          key = variable |> String.strip
+          value = data |> indifferent_access(key) |> to_string |> escape
         else
-          key = String.replace(variable, "&", "") |> String.strip |> String.to_atom
-          value = data[key] |> to_string
+          key = String.replace(variable, "&", "") |> String.strip
+          value = data |> indifferent_access(key) |> to_string
         end
         if value == nil do
           template
@@ -32,6 +32,10 @@ defmodule Mustache do
           double_mustaches(String.replace(template, "{{#{variable}}}", value), data)
         end
     end
+  end
+  
+  def indifferent_access(map, string_key) do
+    map[string_key] || map[string_key |> String.to_atom]
   end
 
   defp scan_for_dot(template, data) do
@@ -51,8 +55,8 @@ defmodule Mustache do
       [] -> template
       _  ->
         variable = List.first(scans) |> clean(["{{{", "}}}"])
-        key = variable |> String.strip |> String.to_atom
-        value = data[key] |> to_string
+        key = variable |> String.strip
+        value = data |> indifferent_access(key) |> to_string
         if value == nil do
           template
         else

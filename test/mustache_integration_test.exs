@@ -6,6 +6,11 @@ defmodule MustacheTest do
     assert Mustache.render("Hello {{subject}}, my name is {{name}}", data) == "Hello world, my name is John"
   end
 
+  test "String variables preferred over atoms" do
+    data = %{"foo" => "string", :foo => "atom"}
+    assert Mustache.render("This is a {{foo}}", data) == "This is a string"
+  end
+
   test "Multiple triple mustaches" do
     forbidden = %{set1: "& \"", set2: "< >"}
     assert Mustache.render("Not HTML escaped: {{{set1}}} These also not: {{{set2}}}\n", forbidden) == "Not HTML escaped: & \" These also not: < >\n"
