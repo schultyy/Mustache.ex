@@ -94,7 +94,7 @@ defmodule MustacheFeatureTest do
   end
 
   test "Ampersand - Standalone" do
-    assert Mustache.render("  {{&string}}\n", % { string: '---' }) == "  ---\n"
+    assert Mustache.render("  {{&string}}\n", %{ string: '---' }) == "  ---\n"
   end
 
    # Whitespace Insensitivity
