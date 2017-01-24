@@ -1,7 +1,7 @@
 defmodule Mustache do
 
   def render(template, data \\%{}) do
-    Enum.reduce(strategies, template, fn(strategy, template) ->
+    Enum.reduce(strategies(), template, fn(strategy, template) ->
       predicate = elem(strategy, 0)
       function = elem(strategy, 1)
       if predicate.(template) do
@@ -13,18 +13,18 @@ defmodule Mustache do
   end
 
   defp double_mustaches(template, data) do
-    scans = Regex.scan(double_regex, template) |> List.flatten
+    scans = Regex.scan(double_regex(), template) |> List.flatten
     case scans do
       [] -> template
       _  ->
         first_scan = List.first(scans)
         variable = first_scan |> clean(["{{", "}}"])
-        if escape?(first_scan) do
+        value = if escape?(first_scan) do
           key = variable |> String.strip
-          value = data |> indifferent_access(key) |> to_string |> escape
+          data |> indifferent_access(key) |> to_string |> escape
         else
           key = String.replace(variable, "&", "") |> String.strip
-          value = data |> indifferent_access(key) |> to_string
+          data |> indifferent_access(key) |> to_string
         end
         if value == nil do
           template
@@ -33,7 +33,7 @@ defmodule Mustache do
         end
     end
   end
-  
+
   def indifferent_access(map, string_key) do
     map[string_key] || map[string_key |> String.to_atom]
   end
@@ -50,7 +50,7 @@ defmodule Mustache do
   end
 
   defp triple_mustaches(template, data) do
-    scans = Regex.scan(triple_regex, template) |> List.flatten
+    scans = Regex.scan(triple_regex(), template) |> List.flatten
     case scans do
       [] -> template
       _  ->
@@ -108,11 +108,11 @@ defmodule Mustache do
   end
 
   defp strategies do
-    [{ fn(template) -> Regex.match?(triple_regex, template) end,
+    [{ fn(template) -> Regex.match?(triple_regex(), template) end,
         fn(template, data) -> triple_mustaches(template, data) end},
     { fn(template) -> Regex.match?(regex("{{", "}}", "\\w+\\.\\w+"), template) end,
         fn(template, data) -> scan_for_dot(template, data) end },
-    { fn(template) -> Regex.match?(double_regex, template) end,
+    { fn(template) -> Regex.match?(double_regex(), template) end,
         fn(template, data) -> double_mustaches(template, data) end}]
   end
 end

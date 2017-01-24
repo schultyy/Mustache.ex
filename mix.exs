@@ -5,9 +5,9 @@ defmodule Mustache.Mixfile do
     [app: :mustache,
      version: "0.2.0",
      elixir: "~> 1.0",
-     package: package,
+     package: package(),
      description: "Mustache templates for Elixir",
-     deps: deps]
+     deps: deps()]
   end
 
   # Configuration for the OTP application
