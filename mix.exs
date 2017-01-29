@@ -3,7 +3,7 @@ defmodule Mustache.Mixfile do
 
   def project do
     [app: :mustache,
-     version: "0.2.0",
+     version: "0.3.0",
      elixir: "~> 1.0",
      package: package(),
      description: "Mustache templates for Elixir",
@@ -33,6 +33,7 @@ defmodule Mustache.Mixfile do
   defp package do
     [contributors: ["Jan Schulte"],
       licenses: ["MIT License"],
+      maintainers: ["Jan Schulte"],
       links: %{"GitHub" => "https://github.com/schultyy/Mustache.ex"},
       files: ~w(mix.exs README.md lib)]
   end
