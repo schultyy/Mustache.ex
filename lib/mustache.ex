@@ -34,7 +34,7 @@ defmodule Mustache do
     end
   end
 
-  def indifferent_access(map, string_key) do
+  defp indifferent_access(map, string_key) do
     map[string_key] || map[string_key |> String.to_atom]
   end
 
