@@ -39,7 +39,7 @@ defmodule Mustache do
   end
 
   defp scan_for_dot(template, data) do
-    regex = regex("{{", "}}", "\\w+\\.\\w+")
+    regex = regex("{{", "}}", "\\w+(\\.\\w+)+")
     scans = Regex.scan(regex, template) |> List.flatten
     case scans do
       [] -> template
