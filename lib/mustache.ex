@@ -67,7 +67,7 @@ defmodule Mustache do
 
   defp interpolate(template, data, path) do
     value = resolve(data, String.split(path, "."))
-    String.replace(template, "{{#{path}}}", value)
+    String.replace(template, "{{#{path}}}", to_string(value))
   end
 
   defp resolve(data, path) do
