@@ -39,7 +39,7 @@ defmodule Mustache do
   end
 
   defp scan_for_dot(template, data) do
-    regex = regex("{{", "}}", "\\w+\\.\\w+")
+    regex = regex("{{", "}}", "\\w+(\\.\\w+)+")
     scans = Regex.scan(regex, template) |> List.flatten
     case scans do
       [] -> template
@@ -67,7 +67,7 @@ defmodule Mustache do
 
   defp interpolate(template, data, path) do
     value = resolve(data, String.split(path, "."))
-    String.replace(template, "{{#{path}}}", value)
+    String.replace(template, "{{#{path}}}", to_string(value))
   end
 
   defp resolve(data, path) do
