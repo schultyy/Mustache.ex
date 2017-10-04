@@ -35,7 +35,18 @@ defmodule Mustache do
   end
 
   defp indifferent_access(map, string_key) do
-    map[string_key] || map[string_key |> String.to_atom]
+    case Access.get(map, string_key) do
+      nil -> Access.get(map, resolve_key(string_key))
+      val -> val
+    end
+  end
+
+  defp resolve_key(key) do
+    try do
+      String.to_existing_atom(key)
+    rescue
+      ArgumentError -> key
+    end
   end
 
   defp scan_for_dot(template, data) do
@@ -70,12 +81,11 @@ defmodule Mustache do
     String.replace(template, "{{#{path}}}", to_string(value))
   end
 
-  defp resolve(data, path) do
-    key = String.to_atom(hd(path))
-    case tl(path) do
-      [] -> data[key]
-      _  -> resolve(data[key], tl(path))
-    end
+  def resolve(data, [key | []]), do: indifferent_access(data, key)
+  def resolve(data, [key | rest]) do
+    data
+    |> indifferent_access(key)
+    |> resolve(rest)
   end
 
   defp double_regex do
