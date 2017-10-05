@@ -61,7 +61,9 @@ defmodule MustacheFeatureTest do
 
   test "Dotted Names" do
     assert Mustache.render("\"{{person.name}}\" == \"Joe\"",
-              %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+             %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+    assert Mustache.render("\"{{person.name.first}}\" == \"Joe\"",
+             %{person: %{name: %{first: "Joe"}}}) == "\"Joe\" == \"Joe\""
   end
 
   #Sections
