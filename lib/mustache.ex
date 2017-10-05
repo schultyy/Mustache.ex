@@ -40,11 +40,11 @@ defmodule Mustache do
 
   defp scan_for_dot(template, data) do
     regex = regex("{{", "}}", "\\w+(\\.\\w+)+")
-    scans = Regex.scan(regex, template) |> List.flatten
-    case scans do
-      [] -> template
+    matches = Regex.run(regex, template)
+    case matches do
+      nil -> template
       _  ->
-        path = List.first(scans) |> clean(["{{", "}}"])
+        path = List.first(matches) |> clean(["{{", "}}"])
         scan_for_dot(interpolate(template, data, path), data)
     end
   end
@@ -110,7 +110,7 @@ defmodule Mustache do
   defp strategies do
     [{ fn(template) -> Regex.match?(triple_regex(), template) end,
         fn(template, data) -> triple_mustaches(template, data) end},
-    { fn(template) -> Regex.match?(regex("{{", "}}", "\\w+\\.\\w+"), template) end,
+    { fn(template) -> Regex.match?(regex("{{", "}}", "\\w+(\\.\\w+)+"), template) end,
         fn(template, data) -> scan_for_dot(template, data) end },
     { fn(template) -> Regex.match?(double_regex(), template) end,
         fn(template, data) -> double_mustaches(template, data) end}]
