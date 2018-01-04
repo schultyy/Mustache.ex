@@ -34,8 +34,54 @@ defmodule Mustache do
     end
   end
 
+  defp process_section(template, data) do
+    matches = Regex.run(section_regex(), template)
+    case matches do
+      nil -> template
+      [full, predicate, var, body] ->
+        val = indifferent_access(data, var)
+        section_val = case predicate do
+          "#" -> process_if(body, val)
+          "^" -> process_unless(body, val)
+        end
+        process_section(String.replace(template, full, section_val), data)
+    end
+  end
+
+  defp process_if(template, val) do
+    case val do
+      nil -> ""
+      false -> ""
+      [] -> ""
+      [_ | _] -> val
+                 |> Stream.map(&(render(template, &1)))
+                 |> Enum.join()
+      val -> render(template, val)
+    end
+  end
+
+  defp process_unless(template, val) do
+    case val do
+      nil -> render(template, val)
+      false -> render(template, val)
+      [] -> render(template, val)
+      _val -> ""
+    end
+  end
+
   defp indifferent_access(map, string_key) do
-    map[string_key] || map[string_key |> String.to_atom]
+    case Access.get(map, string_key) do
+      nil -> Access.get(map, resolve_key(string_key))
+      val -> val
+    end
+  end
+
+  defp resolve_key(key) do
+    try do
+      String.to_existing_atom(key)
+    rescue
+      ArgumentError -> key
+    end
   end
 
   defp scan_for_dot(template, data) do
@@ -70,12 +116,11 @@ defmodule Mustache do
     String.replace(template, "{{#{path}}}", to_string(value))
   end
 
-  defp resolve(data, path) do
-    key = String.to_atom(hd(path))
-    case tl(path) do
-      [] -> data[key]
-      _  -> resolve(data[key], tl(path))
-    end
+  def resolve(data, [key | []]), do: indifferent_access(data, key)
+  def resolve(data, [key | rest]) do
+    data
+    |> indifferent_access(key)
+    |> resolve(rest)
   end
 
   defp double_regex do
@@ -84,6 +129,10 @@ defmodule Mustache do
 
   defp triple_regex do
     regex("{{{\\s*", "\\s*}}}")
+  end
+
+  defp section_regex do
+    ~r<{{\s*(#|\^)\s*([\w.]+)\s*}}(.*?){{\s*/\s*\2\s*}}>
   end
 
   defp regex(otag, ctag, body \\ "\\w+") do
@@ -108,7 +157,9 @@ defmodule Mustache do
   end
 
   defp strategies do
-    [{ fn(template) -> Regex.match?(triple_regex(), template) end,
+    [{ fn(template) -> Regex.match?(section_regex(), template) end,
+        fn(template, data) -> process_section(template, data) end },
+    { fn(template) -> Regex.match?(triple_regex(), template) end,
         fn(template, data) -> triple_mustaches(template, data) end},
     { fn(template) -> Regex.match?(regex("{{", "}}", "\\w+(\\.\\w+)+"), template) end,
         fn(template, data) -> scan_for_dot(template, data) end },
