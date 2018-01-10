@@ -20,10 +20,10 @@ defmodule Mustache do
         first_scan = List.first(scans)
         variable = first_scan |> clean(["{{", "}}"])
         value = if escape?(first_scan) do
-          key = variable |> String.strip
+          key = variable |> String.trim
           data |> indifferent_access(key) |> to_string |> escape
         else
-          key = String.replace(variable, "&", "") |> String.strip
+          key = String.replace(variable, "&", "") |> String.trim
           data |> indifferent_access(key) |> to_string
         end
         if value == nil do
@@ -55,7 +55,7 @@ defmodule Mustache do
       [] -> template
       _  ->
         variable = List.first(scans) |> clean(["{{{", "}}}"])
-        key = variable |> String.strip
+        key = variable |> String.trim
         value = data |> indifferent_access(key) |> to_string
         if value == nil do
           template
