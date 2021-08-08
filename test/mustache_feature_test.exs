@@ -66,10 +66,36 @@ defmodule MustacheFeatureTest do
              %{person: %{name: %{first: "Joe"}}}) == "\"Joe\" == \"Joe\""
   end
 
-  @tag :pending
-  test "Dotted Names - Basic Interpolation" do
+  test "Dotted Names - String Keys" do
+    assert Mustache.render("\"{{person.name}}\" == \"Joe\"",
+              %{"person" => %{"name" => "Joe"}}) == "\"Joe\" == \"Joe\""
+  end
+
+  test "Dotted Names - Mixed Keys" do
+    assert Mustache.render("\"{{person.name}}\" == \"Joe\"",
+              %{"person" => %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+  end
+
+  #Sections
+
+  test "Section Interpolation" do
     assert Mustache.render("\"{{person.name}}\" == \"{{#person}}{{name}}{{/person}}\"",
               %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+  end
+
+  test "Section Interpolation - Inverse" do
+    assert Mustache.render("\"{{person.name}}\" == \"{{^person}}{{name}}{{/person}}\"",
+              %{person: %{name: "Joe"}}) == "\"Joe\" == \"\""
+  end
+
+  test "Section Interpolation - Basic and Inverse" do
+    assert Mustache.render("\"{{person.name}}\" == \"{{#person_2}}{{name}}{{/person_2}}{{^person_2}}Joe{{/person_2}}\"",
+              %{person: %{name: "Joe"}}) == "\"Joe\" == \"Joe\""
+  end
+
+  test "Section Interpolation - list values" do
+    assert Mustache.render("\"{{#people}}{{name}} {{/people}}\"",
+              %{people: [%{name: "Joe"}, %{name: "Jill"}]}) == "\"Joe Jill \""
   end
 
   #Whitespace sensitivity
