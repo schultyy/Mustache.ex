@@ -16,7 +16,7 @@ In your `mix.exs`, add Mustache as dependency:
 
 ```elixir
 defp deps do
-  [{:mustache, "~> 0.3.0"}]
+  [{:mustache, "~> 0.4.0"}]
 end
 ```
 
