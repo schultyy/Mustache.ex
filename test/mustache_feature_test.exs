@@ -98,6 +98,33 @@ defmodule MustacheFeatureTest do
               %{people: [%{name: "Joe"}, %{name: "Jill"}]}) == "\"Joe Jill \""
   end
 
+  test "Objects and hashes should be pushed onto the context stack." do
+    assert Mustache.render("{{#context}}Hi {{name}}.{{/context}}", %{context: %{name: "Joe"}})
+  end
+
+  test "Names missing in the current context are looked up in the stack." do
+    assert Mustache.render(
+             "{{#sec}}{{a}}, {{b}}, {{c.d}}{{/sec}}",
+             %{a: "foo", b: "wrong", sec: %{b: "bar"}, c: %{d: "baz"}}
+           ) == "foo, bar, baz"
+  end
+
+  test "All elements on the context stack should be accessible within lists." do
+    data = %{
+      tops: [
+        %{
+          tname: %{upper: "A", lower: "a"},
+          middles: [%{mname: "1", bottoms: [%{bname: "x"}, %{bname: "y"}]}]
+        }
+      ]
+    }
+
+    template =
+      "{{#tops}}{{#middles}}{{tname.lower}}{{mname}}.{{#bottoms}}{{tname.upper}}{{mname}}{{bname}}.{{/bottoms}}{{/middles}}{{/tops}}"
+
+    assert Mustache.render(template, data) == "a1.A1x.A1y."
+  end
+
   #Whitespace sensitivity
 
   test "Interpolation - Surrounding Whitespace" do
