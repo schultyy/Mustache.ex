@@ -1,8 +1,14 @@
 defmodule Mustache.Mixfile do
   use Mix.Project
 
-  @source_url "https://github.com/schultyy/Mustache.ex"
-  @version "0.4.0"
+  def project do
+    [app: :mustache,
+     version: "0.4.0",
+     elixir: "~> 1.0",
+     package: package(),
+     description: description(),
+     deps: deps()]
+  end
 
   def project do
     [
