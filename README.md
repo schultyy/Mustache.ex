@@ -1,6 +1,12 @@
 Mustache
 ========
+
 [![Build Status](https://travis-ci.org/schultyy/Mustache.ex.svg?branch=master)](https://travis-ci.org/schultyy/Mustache.ex)
+[![Module Version](https://img.shields.io/hexpm/v/mustache.svg)](https://hex.pm/packages/mustache)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/mustache/)
+[![Total Download](https://img.shields.io/hexpm/dt/mustache.svg)](https://hex.pm/packages/mustache)
+[![License](https://img.shields.io/hexpm/l/mustache.svg)](https://github.com/schultyy/Mustache.ex/blob/master/LICENSE.md)
+[![Last Updated](https://img.shields.io/github/last-commit/schultyy/Mustache.ex.svg)](https://github.com/schultyy/Mustache.ex/commits/master)
 
 Minimal templating with {{mustaches}} in Elixir - [http://mustache.github.com/](http://mustache.github.com/)
 
@@ -44,3 +50,11 @@ Run all tests:
 ```bash
 $ mix test
 ```
+
+Copyright and License
+=====================
+
+Copyright (c) 2015 Jan Schulte
+
+This work is free. You can redistribute it and/or modify it under the
+terms of the MIT License. See the [LICENSE.md](./LICENSE.md) file for more details.
