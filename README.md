@@ -1,7 +1,6 @@
 Mustache
 ========
 
-[![Build Status](https://travis-ci.org/schultyy/Mustache.ex.svg?branch=master)](https://travis-ci.org/schultyy/Mustache.ex)
 [![Module Version](https://img.shields.io/hexpm/v/mustache.svg)](https://hex.pm/packages/mustache)
 [![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/mustache/)
 [![Total Download](https://img.shields.io/hexpm/dt/mustache.svg)](https://hex.pm/packages/mustache)
@@ -13,7 +12,7 @@ Minimal templating with {{mustaches}} in Elixir - [http://mustache.github.com/](
 Prerequisites
 =============
 
-- Elixir 1.0.x
+- Elixir 1.x
 
 Installation
 ============
@@ -22,7 +21,7 @@ In your `mix.exs`, add Mustache as dependency:
 
 ```elixir
 defp deps do
-  [{:mustache, "~> 0.4.0"}]
+  [{:mustache, "~> 0.5.0"}]
 end
 ```
 
@@ -54,7 +53,7 @@ $ mix test
 Copyright and License
 =====================
 
-Copyright (c) 2015 Jan Schulte
+Copyright (c) 2023 Jan Schulte
 
 This work is free. You can redistribute it and/or modify it under the
 terms of the MIT License. See the [LICENSE.md](./LICENSE.md) file for more details.
