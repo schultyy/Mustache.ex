@@ -6,7 +6,7 @@ defmodule Mustache.Mixfile do
      version: "0.4.0",
      elixir: "~> 1.0",
      package: package(),
-     description: "Mustache templates for Elixir",
+     description: description(),
      deps: deps()]
   end
 
