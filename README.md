@@ -7,7 +7,7 @@ Mustache
 [![License](https://img.shields.io/hexpm/l/mustache.svg)](https://github.com/schultyy/Mustache.ex/blob/master/LICENSE.md)
 [![Last Updated](https://img.shields.io/github/last-commit/schultyy/Mustache.ex.svg)](https://github.com/schultyy/Mustache.ex/commits/master)
 
-Minimal templating with {{mustaches}} in Elixir - [http://mustache.github.com/](http://mustache.github.com/)
+Minimal templating with {{mustaches}} in Elixir - [http://mustache.github.com/](http://mustache.github.io/)
 
 Prerequisites
 =============
